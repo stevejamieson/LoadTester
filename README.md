@@ -26,6 +26,12 @@ Or build/run with Docker:
     docker build -t loadtester .
     docker run loadtester --help
 
+# Run a Basic Test
+Send 100 requests to an endpoint:
+
+    python loadtester.py --url https://api.example.com --requests 100
+
+
 
 # ------------ Metrics ------------
     start_time
