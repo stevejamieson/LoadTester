@@ -22,6 +22,7 @@ Install - Clone the repo and install dependencies:
     pip install -r requirements.txt
 
 Or build/run with Docker:
+
     docker build -t loadtester .
     docker run loadtester --help
 
