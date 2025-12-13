@@ -22,12 +22,15 @@ Features at a glance
 # ------------ Rate Limiter ------------
     self.rate = float(rate_per_sec)
     self.capacity = int(burst if burst is not None else max(1, int(rate_per_sec)))
-    self.tokens = self.capacity
-    self.updated = time.monotonic()
-    self._lock = asyncio.Lock()
+
 # ------------ Usage examples ------------
 - Run a 60s GET test at 200 RPS with 50 workers:
     python loadtester.py https://example.com -c 50 --qps 200 -d 60
+    
+
+
+
+    
     
 
 
