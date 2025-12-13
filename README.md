@@ -1,4 +1,4 @@
-Features at a glance
+Features of LoadTester
 - Async engine: Efficient aiohttp + asyncio for high concurrency.
 - Rate limiting: Token-bucket QPS control to avoid accidental overloads.
 - Flexible requests: Methods, headers, payload from file or inline, timeouts, TLS verify off.
