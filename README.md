@@ -29,7 +29,8 @@ Features at a glance
    `` python loadtester.py https://example.com -c 50 --qps 200 -d 60``
     
 - Run a 30s GET test at 200 RPS with 5 workers saving results to a results.csv and showing the live progress of the live test:
-``python loadtester.py https://www.google.com -c 5 -d 30 --qps 200 --csv results.csv --print_progress``
+
+    ``python loadtester.py https://www.google.com -c 5 -d 30 --qps 200 --csv results.csv --print_progress``
 
     
     
