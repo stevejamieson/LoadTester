@@ -4,8 +4,9 @@ Features at a glance
 - Flexible requests: Methods, headers, payload from file or inline, timeouts, TLS verify off.
 - Metrics: Success/failure counts, status breakdown, throughput, mean/median/p95/p99 latency.
 - Outputs: Human-readable summary and optional JSON file.
-- Azure-ready: Dockerfile and Azure CLI snippet to run in Azure Container Instances.
-
+- CSV per-request logs for deeper analysis.
+- Open-loop vs. closed-loop modes (strict QPS scheduling vs. fire-on-completion).
+- Scenario scripting for multiple endpoints and weighted mixes.
 
 
 
@@ -28,26 +29,19 @@ Features at a glance
 
 
 # ------------ Usage examples ------------
-    python loadtester.py https://example.com -c 50 --qps 200 -d 60
 - Run a 60s GET test at 200 RPS with 50 workers:
-
-
+    python loadtester.py https://example.com -c 50 --qps 200 -d 60
 - POST JSON from file with headers, fixed 10,000 requests:
-  python load_tester.py https://api.example.com/resource \
+    python load_tester.py https://api.example.com/resource \
       -m POST --headers "Content-Type:application/json" "Authorization:Bearer XYZ" \
       --data @payload.json -c 100 --requests 10000 --timeout 20 --allow-redirects
-  
 - Disable TLS verification (for test endpoints) and save JSON metrics:
     python loadtester.py https://self-signed.local -c 20 -d 30 --no-verify --json-out results.json
-
 - Show per-second progress:
-python loadtester.py https://example.com -d 30 -c 100 --qps 500 --print_progress
+    python loadtester.py https://example.com -d 30 -c 100 --qps 500 --print_progress
 
 
 
-Run on Azure Container Instances (ACI)
-- Create a resource group and run the container:
-az group create --name rg-loadtest --location canadaeast
 
 
 
@@ -59,8 +53,4 @@ Tips for accurate tests if hosted on Azure
 - Target backoff: Use --qps to respect service limits and avoid triggering rate limits on the target.
 
 
-- Application Insights custom metrics export.
-- CSV per-request logs for deeper analysis.
-- Open-loop vs. closed-loop modes (strict QPS scheduling vs. fire-on-completion).
-- Scenario scripting for multiple endpoints and weighted mixes.
-Tell me your target scale, URL type, and whether you want telemetry hooked into Azure Monitor, and I’ll tailor this to fit.
+
