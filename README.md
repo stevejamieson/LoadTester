@@ -31,7 +31,10 @@ Send 100 requests to an endpoint:
 
     python loadtester.py --url https://api.example.com --requests 100
 
+# Control Concurrency
+Run with 20 concurrent workers:
 
+    python loadtester.py --url https://api.example.com --concurrency 20 --requests 500
 
 # ------------ Metrics ------------
     start_time
