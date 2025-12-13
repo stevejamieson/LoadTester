@@ -171,7 +171,7 @@ async def worker(name: int,
 # ------------ Main ------------
 
 def parse_args():
-    p = argparse.ArgumentParser(description="Simple async load tester for a given URL.")
+    p = argparse.ArgumentParser(description="A simple async loadtester for a given URL.")
     p.add_argument("--csv", help="Write per-request details to CSV file.")
     p.add_argument("url", help="Target URL.")
     p.add_argument("-m", "--method", default="GET", help="HTTP method (GET, POST, PUT, DELETE, etc.).")
