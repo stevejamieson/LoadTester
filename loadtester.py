@@ -6,28 +6,40 @@ import json
 import signal
 import sys
 import time
+import csv
 from collections import Counter, deque
-from dataclasses import dataclass, asdict
-from typing import Optional, Dict, Any
+from dataclasses import dataclass, asdict, field
+from typing import Optional, Dict, Any,List
+
 
 # ------------ Metrics ------------
 
 @dataclass
 class Metrics:
+    csv_path: Optional[str] = None
     start_time: float
     end_time: float = 0.0
     total_requests: int = 0
     successful: int = 0
     failed: int = 0
-    status_counts: Dict[int, int] = None
-    latencies_ms: list = None
+    status_counts: Dict[int, int] = field(default_factory=Counter)
+    latencies_ms: List[float] = field(default_factory=list)
     bytes_received: int = 0
+    _csv_writer: Optional[csv.DictWriter] = field(init=False, default=None)
+    _csv_file: Optional[object] = field(init=False, default=None)
 
     def __post_init__(self):
         if self.status_counts is None:
             self.status_counts = Counter()
         if self.latencies_ms is None:
             self.latencies_ms = []
+        if self.csv_path:
+            self._csv_file = open(self.csv_path, "w", newline="", encoding="utf-8")
+            self._csv_writer = csv.DictWriter(
+                self._csv_file,
+                fieldnames=["timestamp", "status", "latency_ms", "bytes_received"]
+            )
+            self._csv_writer.writeheader()
 
     def record(self, status: Optional[int], latency_ms: float, bytes_received: int):
         self.total_requests += 1
@@ -40,8 +52,19 @@ class Metrics:
         self.latencies_ms.append(latency_ms)
         self.bytes_received += bytes_received
 
+        if self._csv_writer:
+            self._csv_writer.writerow({
+                "timestamp": time.time(),
+                "status": status,
+                "latency_ms": latency_ms,
+                "bytes_received": bytes_received
+            })
+            self._csv_file.flush()  # ensure data is written to disk
+
     def finalize(self):
         self.end_time = time.time()
+        if self._csv_file:
+            self._csv_file.close()
 
     def summary(self) -> Dict[str, Any]:
         elapsed = max(1e-9, self.end_time - self.start_time)
@@ -149,6 +172,7 @@ async def worker(name: int,
 
 def parse_args():
     p = argparse.ArgumentParser(description="Simple async load tester for a given URL.")
+    p.add_argument("--csv", help="Write per-request details to CSV file.")
     p.add_argument("url", help="Target URL.")
     p.add_argument("-m", "--method", default="GET", help="HTTP method (GET, POST, PUT, DELETE, etc.).")
     p.add_argument("-c", "--concurrency", type=int, default=50, help="Number of concurrent workers.")
