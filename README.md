@@ -14,13 +14,16 @@ A lightweight, flexible Python CLI load testing tool you can run locally or depl
 
 
 ⚡ Quick Start
-Install
-Clone the repo and install dependencies:
+
+Install - Clone the repo and install dependencies:
 
     git clone https://github.com/stevejamieson/LoadTester.git
     cd LoadTester
     pip install -r requirements.txt
 
+Or build/run with Docker:
+    docker build -t loadtester .
+    docker run loadtester --help
 
 
 # ------------ Metrics ------------
