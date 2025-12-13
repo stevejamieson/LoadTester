@@ -34,7 +34,7 @@ Send 100 requests to an endpoint:
 # Control Concurrency
 Run with 20 concurrent workers:
 
-    python loadtester.py --url https://api.example.com --concurrency 20 --requests 500
+    python loadtester.py --url https://api.example.com --concurrency 20 --requests 100
 
 # Rate Limit (QPS)
 Throttle to 200 requests per second for 60 seconds:
