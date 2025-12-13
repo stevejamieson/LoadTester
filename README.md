@@ -1,5 +1,6 @@
 LoadTester
 A lightweight, flexible Python CLI load testing tool you can run locally or deploy as a container on Azure. Designed for developers who want quick, clear insights into API performance without the overhead of complex frameworks.
+
 🚀 Why LoadTester?
 - Run Anywhere: Use it on your laptop for fast feedback or scale it in Azure as a container.
 - Full Control: Shape traffic with concurrency, QPS (rate limiting), fixed request counts, or test duration.
@@ -12,19 +13,15 @@ A lightweight, flexible Python CLI load testing tool you can run locally or depl
 - Cloud-native setups where containerized testing fits right in
 
 
+⚡ Quick Start
+Install
+Clone the repo and install dependencies:
 
-
-
-
-Features of LoadTester
-- Async engine: Efficient aiohttp + asyncio for high concurrency.
-- Rate limiting: Token-bucket QPS control to avoid accidental overloads.
-- Flexible requests: Methods, headers, payload from file or inline, timeouts, TLS verify off.
-- Metrics: Success/failure counts, status breakdown, throughput, mean/median/p95/p99 latency.
-- Outputs: Human-readable summary and optional JSON file.
-- CSV per-request logs for deeper analysis.
-- Open-loop vs. closed-loop modes (strict QPS scheduling vs. fire-on-completion).
-- Scenario scripting for multiple endpoints and weighted mixes.
+``
+git clone https://github.com/stevejamieson/LoadTester.git
+cd LoadTester
+pip install -r requirements.txt
+``
 
 
 # ------------ Metrics ------------
