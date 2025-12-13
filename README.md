@@ -9,7 +9,6 @@ Features of LoadTester
 - Scenario scripting for multiple endpoints and weighted mixes.
 
 
-
 # ------------ Metrics ------------
     start_time
     end_time
