@@ -53,7 +53,29 @@ Throttle to 200 requests per second for 60 seconds:
     python loadtester.py --url https://api.example.com --tls false
 
 
+# 📊 Metrics Output Example
+After running a test, LoadTester prints clear, human‑readable metrics. Here’s a sample output:
 
+    === Load Test Results ===
+    Target URL: https://api.example.com
+    Total Requests: 5000
+    Successful Responses: 4975
+    Failed Responses: 25
+
+    Throughput: 198.4 requests/sec
+    Average Latency: 42.7 ms
+
+    Latency Percentiles:
+    50th (median):   40 ms
+    75th:            55 ms
+    90th:            70 ms
+    95th:            85 ms
+    99th:           120 ms
+    Max:            250 ms
+
+    Error Breakdown:
+    500 Internal Server Error: 20
+    408 Request Timeout: 5
 
 # ------------ Metrics ------------
     start_time
