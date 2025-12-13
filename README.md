@@ -26,10 +26,11 @@ Features at a glance
     self._lock = asyncio.Lock()
 # ------------ Worker ------------
 
-*********************************************************************************
-Usage examples
-- Run a 60s GET test at 200 RPS with 50 workers:
+
+# ------------ Usage examples ------------
     python loadtester.py https://example.com -c 50 --qps 200 -d 60
+- Run a 60s GET test at 200 RPS with 50 workers:
+
 
 - POST JSON from file with headers, fixed 10,000 requests:
   python load_tester.py https://api.example.com/resource \
