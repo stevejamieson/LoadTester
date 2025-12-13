@@ -29,15 +29,15 @@ Features at a glance
 *********************************************************************************
 Usage examples
 - Run a 60s GET test at 200 RPS with 50 workers:
-python loadtester.py https://example.com -c 50 --qps 200 -d 60
+    python loadtester.py https://example.com -c 50 --qps 200 -d 60
 
 - POST JSON from file with headers, fixed 10,000 requests:
-python load_tester.py https://api.example.com/resource \
-  -m POST --headers "Content-Type:application/json" "Authorization:Bearer XYZ" \
-  --data @payload.json -c 100 --requests 10000 --timeout 20 --allow-redirects
+  python load_tester.py https://api.example.com/resource \
+      -m POST --headers "Content-Type:application/json" "Authorization:Bearer XYZ" \
+      --data @payload.json -c 100 --requests 10000 --timeout 20 --allow-redirects
   
 - Disable TLS verification (for test endpoints) and save JSON metrics:
-python loadtester.py https://self-signed.local -c 20 -d 30 --no-verify --json-out results.json
+    python loadtester.py https://self-signed.local -c 20 -d 30 --no-verify --json-out results.json
 
 - Show per-second progress:
 python loadtester.py https://example.com -d 30 -c 100 --qps 500 --print_progress
