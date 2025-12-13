@@ -11,18 +11,17 @@ Features at a glance
 
 
 # ------------ Metrics ------------
-    start_time: float
-    end_time: float = 0.0
-    total_requests: int = 0
-    successful: int = 0
-    failed: int = 0
-    status_counts: Dict[int, int] = None
-    latencies_ms: list = None
-    bytes_received: int = 0
+    start_time
+    end_time
+    total_requests
+    successful
+    failed
+    status_counts
+    latencies_ms
+    bytes_received
 # ------------ Rate Limiter ------------
-    self.rate = float(rate_per_sec)
-    self.capacity = int(burst if burst is not None else max(1, int(rate_per_sec)))
-
+    rate
+    capacity = int(burst if burst is not None else max(1, int(rate_per_sec)))
 # ------------ Usage examples ------------
 - Run a 60s GET test at 200 RPS with 50 workers:
 
