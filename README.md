@@ -29,17 +29,23 @@ Or build/run with Docker:
 # Run a Basic Test
 Send 100 requests to an endpoint:
 
-    python loadtester.py --url https://api.example.com --requests 100
+    python loadtester.py  https://api.example.com --qps 100
 
 # Control Concurrency
 Run with 20 concurrent workers:
 
-    python loadtester.py --url https://api.example.com --concurrency 20 --requests 100
+    python loadtester.py  https://api.example.com -c 20 --qps 100
 
 # Rate Limit (QPS)
 Throttle to 200 requests per second for 60 seconds:
 
-    python loadtester.py --url https://api.example.com --qps 200 --duration 60
+    python loadtester.py  https://api.example.com --qps 200 --duration 60
+
+
+# Rate Limit (QPS) and saving results to csv
+Throttle to 100 requests per second with 5 workers for 30 seconds:
+
+    python loadtester.py https://www.google.com -c 5 -d 30 --qps 100 --csv results.csv --print_progress
 
 # Custom Headers & Payload
 
@@ -77,18 +83,13 @@ After running a test, LoadTester prints clear, human‑readable metrics. Here’
     500 Internal Server Error: 20
     408 Request Timeout: 5
 
-# ------------ Metrics ------------
-    start_time
-    end_time
-    total_requests
-    successful
-    failed
-    status_counts
-    latencies_ms
-    bytes_received
-# ------------ Rate Limiter ------------
-    rate
-    capacity = int(burst if burst is not None else max(1, int(rate_per_sec)))
+This makes it easy to spot:
+- Tail latency issues (e.g., 99th percentile spikes).
+- Throughput stability under load.
+- Error distribution across response codes.
+
+
+
 # ------------ Usage examples ------------
 - Run a 60s GET test at 200 RPS with 50 workers:
 
