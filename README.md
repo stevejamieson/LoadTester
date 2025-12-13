@@ -29,12 +29,12 @@ Or build/run with Docker:
 # Run a Basic Test
 Send 100 requests to an endpoint:
 
-    python loadtester.py  https://api.example.com --qps 100
+    python loadtester.py  https://api.example.com --r 100
 
 # Control Concurrency
 Run with 20 concurrent workers:
 
-    python loadtester.py  https://api.example.com -c 20 --qps 100
+    python loadtester.py  https://api.example.com -c 20 --r 100
 
 # Rate Limit (QPS)
 Throttle to 200 requests per second for 60 seconds:
