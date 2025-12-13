@@ -36,6 +36,12 @@ Run with 20 concurrent workers:
 
     python loadtester.py --url https://api.example.com --concurrency 20 --requests 500
 
+# Rate Limit (QPS)
+Throttle to 200 requests per second for 60 seconds:
+
+    python loadtester.py --url https://api.example.com --qps 200 --duration 60
+
+
 # ------------ Metrics ------------
     start_time
     end_time
