@@ -216,7 +216,7 @@ async def progress_task(metrics: Metrics):
         last = current
 
 async def run(args):
-    metrics = Metrics(start_time=time.time())
+    metrics = Metrics(start_time=time.time(), csv_path=args.csv)
 
     # Prepare rate limiter and termination conditions
     bucket = TokenBucket(args.qps, burst=args.concurrency) if args.qps and args.qps > 0 else None
@@ -268,6 +268,9 @@ async def run(args):
                 w.cancel()
             await asyncio.gather(*workers, return_exceptions=True)
 
+        # Ensure all workers are drained before finalizing
+        await asyncio.gather(*workers, return_exceptions=True)
+
         metrics.finalize()
         if progress:
             progress.cancel()
@@ -277,6 +280,10 @@ async def run(args):
     print("\n=== Load test summary ===")
     for k, v in summary.items():
         print(f"{k}: {v}")
+
+    # Friendly reminder if CSV logging was enabled
+    if args.csv:
+        print(f"Detailed log written to {args.csv}")
 
     if args.json_out:
         with open(args.json_out, "w", encoding="utf-8") as f:
