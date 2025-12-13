@@ -31,6 +31,7 @@ Features at a glance
 # ------------ Usage examples ------------
 - Run a 60s GET test at 200 RPS with 50 workers:
     python loadtester.py https://example.com -c 50 --qps 200 -d 60
+    
 - POST JSON from file with headers, fixed 10,000 requests:
     python load_tester.py https://api.example.com/resource \
       -m POST --headers "Content-Type:application/json" "Authorization:Bearer XYZ" \
