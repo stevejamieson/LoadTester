@@ -41,6 +41,15 @@ Throttle to 200 requests per second for 60 seconds:
 
     python loadtester.py --url https://api.example.com --qps 200 --duration 60
 
+# Custom Headers & Payload
+
+    python loadtester.py --url https://api.example.com \
+    --method POST \
+    --header "Authorization: Bearer TOKEN" \
+    --payload '{"key":"value"}'
+
+
+
 
 # ------------ Metrics ------------
     start_time
