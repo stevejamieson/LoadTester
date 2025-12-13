@@ -1,0 +1,60 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "LoadTester Dashboard",
+    "tags": ["load testing", "api", "performance"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "Requests per Second",
+        "targets": [
+          {
+            "expr": "rate(loadtester_requests_total[1m])",
+            "legendFormat": "RPS"
+          }
+        ],
+        "yaxes": [
+          { "format": "req/s", "label": "Requests/sec" },
+          { "format": "short" }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Latency Percentiles",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.5, sum(rate(loadtester_latency_seconds_bucket[1m])) by (le))",
+            "legendFormat": "p50"
+          },
+          {
+            "expr": "histogram_quantile(0.9, sum(rate(loadtester_latency_seconds_bucket[1m])) by (le))",
+            "legendFormat": "p90"
+          },
+          {
+            "expr": "histogram_quantile(0.99, sum(rate(loadtester_latency_seconds_bucket[1m])) by (le))",
+            "legendFormat": "p99"
+          }
+        ],
+        "yaxes": [
+          { "format": "ms", "label": "Latency (ms)" },
+          { "format": "short" }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Error Rate",
+        "targets": [
+          {
+            "expr": "rate(loadtester_errors_total[1m])",
+            "legendFormat": "Errors/sec"
+          }
+        ],
+        "yaxes": [
+          { "format": "req/s", "label": "Errors/sec" },
+          { "format": "short" }
+        ]
+      }
+    ]
+  }
+}
