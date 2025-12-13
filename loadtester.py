@@ -6,17 +6,16 @@ import json
 import signal
 import sys
 import time
-import csv
 from collections import Counter, deque
 from dataclasses import dataclass, asdict, field
 from typing import Optional, Dict, Any,List
+import csv
 
 
 # ------------ Metrics ------------
 
 @dataclass
 class Metrics:
-    csv_path: Optional[str] = None
     start_time: float
     end_time: float = 0.0
     total_requests: int = 0
@@ -25,6 +24,7 @@ class Metrics:
     status_counts: Dict[int, int] = field(default_factory=Counter)
     latencies_ms: List[float] = field(default_factory=list)
     bytes_received: int = 0
+    csv_path: Optional[str] = None
     _csv_writer: Optional[csv.DictWriter] = field(init=False, default=None)
     _csv_file: Optional[object] = field(init=False, default=None)
 
