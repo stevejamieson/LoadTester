@@ -7,18 +7,9 @@ Features at a glance
 - Azure-ready: Dockerfile and Azure CLI snippet to run in Azure Container Instances.
 
 
-import asyncio
-import aiohttp
-import argparse
-import json
-import signal
-import sys
-import time
+
 
 # ------------ Metrics ------------
-
-@dataclass
-class Metrics:
     start_time: float
     end_time: float = 0.0
     total_requests: int = 0
@@ -27,20 +18,12 @@ class Metrics:
     status_counts: Dict[int, int] = None
     latencies_ms: list = None
     bytes_received: int = 0
-
-
-
 # ------------ Rate Limiter ------------
-
-class TokenBucket:
-        self.rate = float(rate_per_sec)
-        self.capacity = int(burst if burst is not None else max(1, int(rate_per_sec)))
-        self.tokens = self.capacity
-        self.updated = time.monotonic()
-        self._lock = asyncio.Lock()
-
-
-
+    self.rate = float(rate_per_sec)
+    self.capacity = int(burst if burst is not None else max(1, int(rate_per_sec)))
+    self.tokens = self.capacity
+    self.updated = time.monotonic()
+    self._lock = asyncio.Lock()
 # ------------ Worker ------------
 
 *********************************************************************************
