@@ -48,6 +48,10 @@ Throttle to 200 requests per second for 60 seconds:
     --header "Authorization: Bearer TOKEN" \
     --payload '{"key":"value"}'
 
+# Toggle TLS
+
+    python loadtester.py --url https://api.example.com --tls false
+
 
 
 
