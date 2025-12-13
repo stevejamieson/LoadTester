@@ -25,9 +25,7 @@ Features at a glance
 
 # ------------ Usage examples ------------
 - Run a 60s GET test at 200 RPS with 50 workers:
-    self.rate = float(rate_per_sec)
-    self.capacity = int(burst if burst is not None else max(1, int(rate_per_sec)))
-    python loadtester.py https://example.com -c 50 --qps 200 -d 60
+   `` python loadtester.py https://example.com -c 50 --qps 200 -d 60``
     
 
 
