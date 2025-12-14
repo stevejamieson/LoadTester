@@ -10,7 +10,17 @@ from collections import Counter, deque
 from dataclasses import dataclass, asdict, field
 from typing import Optional, Dict, Any,List
 import csv
+import click
+from prometheus_client import Counter as PromCounter, Histogram, start_http_server
 
+# Prometheus metrics
+REQUESTS_TOTAL = PromCounter("loadtester_requests_total", "Total requests sent", ["status"])
+ERRORS_TOTAL = PromCounter("loadtester_errors_total", "Total failed requests", ["error_type"])
+LATENCY = Histogram(
+    "loadtester_latency_seconds",
+    "Request latency in seconds",
+    buckets=[0.01, 0.05, 0.1, 0.25, 0.5, 1, 2, 5]
+)
 
 # ------------ Metrics ------------
 
@@ -160,8 +170,20 @@ async def worker(name: int,
             # Keep status None to count as failed
             pass
         finally:
+            latency_s = time.time() - started
             latency_ms = (time.time() - started) * 1000.0
             metrics.record(status, latency_ms, bytes_rcv)
+
+             # Prometheus updates
+            LATENCY.observe(latency_s)
+            if status is None:
+                REQUESTS_TOTAL.labels(status="error").inc()
+            elif status == 200:
+                REQUESTS_TOTAL.labels(status="success").inc()
+            else:
+                REQUESTS_TOTAL.labels(status="error").inc()
+                ERRORS_TOTAL.labels(error_type=str(status)).inc()
+
 
         # If we were doing fixed-request mode and couldn't acquire a token, we should quit.
         if remaining_counter is not None and remaining_counter._value <= 0:
@@ -174,6 +196,8 @@ def parse_args():
     p = argparse.ArgumentParser(description="A simple async loadtester for a given URL.")
     p.add_argument("--csv", help="Write per-request details to CSV file.")
     p.add_argument("url", help="Target URL.")
+    p.add_argument("--prometheus", action="store_true", help="Expose Prometheus metrics on /metrics")
+    p.add_argument("--metrics-port", type=int, default=8000, help="Port for Prometheus metrics server")
     p.add_argument("-m", "--method", default="GET", help="HTTP method (GET, POST, PUT, DELETE, etc.).")
     p.add_argument("-c", "--concurrency", type=int, default=50, help="Number of concurrent workers.")
     p.add_argument("--qps", type=float, default=0.0, help="Global requests-per-second limit (0 = unlimited).")
@@ -187,6 +211,7 @@ def parse_args():
     p.add_argument("--json-out", help="Write metrics summary to JSON file.")
     p.add_argument("--print_progress", action="store_true", help="Print progress every second.")
     return p.parse_args()
+
 
 def parse_headers(header_list):
     headers = {}
@@ -217,6 +242,11 @@ async def progress_task(metrics: Metrics):
 
 async def run(args):
     metrics = Metrics(start_time=time.time(), csv_path=args.csv)
+
+    # Start Prometheus server only if flag is set
+    if args.prometheus:
+        start_http_server(args.metrics_port)
+        print(f"Prometheus metrics available at http://localhost:{args.metrics_port}/metrics")
 
     # Prepare rate limiter and termination conditions
     bucket = TokenBucket(args.qps, burst=args.concurrency) if args.qps and args.qps > 0 else None
@@ -278,8 +308,16 @@ async def run(args):
     # Print summary
     summary = metrics.summary()
     print("\n=== Load test summary ===")
+    # HELP loadtest_total_requests Total requests sent
+    # TYPE loadtest_total_requests counter
+    lines = []
     for k, v in summary.items():
-        print(f"{k}: {v}")
+        # Add HELP and TYPE comments (you can customize TYPE as counter/gauge)
+        lines.append(f"# HELP loadtest_{k} {k.replace('_',' ')}")
+        lines.append(f"# TYPE loadtest_{k} gauge")
+        lines.append(f"loadtest_{k} {v}")
+    print(f"{k}: {v}")
+
 
     # Friendly reminder if CSV logging was enabled
     if args.csv:
