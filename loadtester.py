@@ -310,13 +310,31 @@ async def run(args):
     print("\n=== Load test summary ===")
     # HELP loadtest_total_requests Total requests sent
     # TYPE loadtest_total_requests counter
+    # added so Promesethus can see them in the reporting
     lines = []
     for k, v in summary.items():
         # Add HELP and TYPE comments (you can customize TYPE as counter/gauge)
         lines.append(f"# HELP loadtest_{k} {k.replace('_',' ')}")
         lines.append(f"# TYPE loadtest_{k} gauge")
         lines.append(f"loadtest_{k} {v}")
-    print(f"{k}: {v}")
+        #print(f"{k}: {v}")
+    print(f"Total Requests: {summary['total_requests']}")
+    print(f"Successful Responses: {summary['successful']}")
+    print(f"Failed Responses: {summary['failed']}\n")
+
+    print(f"Throughput: {summary['throughput_rps']:.1f} requests/sec")
+    print(f"Average Latency: {summary['mean_latency_ms']:.1f} ms\n")
+
+    print("Latency Percentiles:")
+    print(f"50th (median):   {summary['median_latency_ms']:.0f} ms")
+    print(f"95th:            {summary['p95_latency_ms']:.0f} ms")
+    print(f"99th:            {summary['p99_latency_ms']:.0f} ms")
+    # If you have 75th, 90th, max, add them here
+
+    print("\nError Breakdown:")
+    for status, count in summary["status_counts"].items():
+        print(f"{status}: {count}")
+
 
 
     # Friendly reminder if CSV logging was enabled
